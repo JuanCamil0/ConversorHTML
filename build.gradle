@@ -1,0 +1,46 @@
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'jacoco'
+	
+	group = 'com.techandsolve.spirit'
+	
+	sourceCompatibility = '1.8'
+	targetCompatibility = '1.8'
+	
+	[ compileJava, compileTestJava ]*.options*.encoding = 'UTF-8'
+	
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	
+	jacoco {
+		toolVersion = '0.7.6.201602180812'
+	}
+}
+
+dependencies {
+	compile 'javax:javaee-api:7.0'
+	compile 'io.reactivex:rxjava:1.1.8'
+	compile 'org.slf4j:slf4j-api:1.7.21'
+	
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.mockito:mockito-all:1.9.5'
+	testCompile 'org.easytesting:fest-assert-core:2.0M10'
+}
+
+subprojects {
+
+	
+	test {
+		jacoco {
+			append = false
+			destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+			classDumpFile = file("$buildDir/jacoco/classpathdumps")
+		}
+	}
+	
+	jar {
+		archiveName = "${baseName}.${extension}"
+	}
+}
